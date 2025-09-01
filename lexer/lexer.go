@@ -75,22 +75,18 @@ func peek(reader *strings.Reader) (byte, error) {
 	return peek, nil
 }
 
-func isWhitespace(b byte) bool {
-	return b == ' ' || b == '\t' || b == '\n' || b == '\r'
-}
-
 func getWhitespaceToken(reader *strings.Reader) (*token.Token, error) {
 	peek, err := peek(reader)
 	if err != nil {
 		return nil, err
 	}
 
-	if isWhitespace(peek) {
+	if token.IsWhitespace(peek) {
 		whitespaceByte, err := reader.ReadByte()
 		if err != nil {
 			return nil, err
 		}
-		return token.WhitespaceToken(whitespaceByte), nil
+		return token.WhitespaceToken(whitespaceByte)
 	}
 
 	return nil, nil
