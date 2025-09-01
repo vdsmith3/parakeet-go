@@ -19,7 +19,14 @@ func getOperatorToken(reader *strings.Reader) (*token.Token, error) {
 }
 
 func isOperatorByte(b byte) bool {
-	return b == '+' || b == '-' || b == '*' || b == '/' || b == '%' || b == '^'
+	return b == '+' ||
+		b == '-' ||
+		b == '*' ||
+		b == '/' ||
+		b == '%' ||
+		b == '^' ||
+		b == '&' ||
+		b == '|'
 }
 
 func parseOperatorToken(reader *strings.Reader) (*token.Token, error) {

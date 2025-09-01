@@ -50,7 +50,7 @@ func TestLex(t *testing.T) {
 		},
 		{
 			name:  "operators",
-			input: "1 + 2 - 3 * 4 / 5 % 6 ^ 7",
+			input: "1 + 2 - 3 * 4 / 5 % 6 ^ 7 & 8 | 9 && 10 || 11",
 			want: []*token.Token{
 				{Type: token.INT, Raw: "1", Value: 1},
 				{Type: token.ADDITION, Raw: "+"},
@@ -65,6 +65,16 @@ func TestLex(t *testing.T) {
 				{Type: token.INT, Raw: "6", Value: 6},
 				{Type: token.EXPONENT, Raw: "^"},
 				{Type: token.INT, Raw: "7", Value: 7},
+				{Type: token.AMPERSAND, Raw: "&"},
+				{Type: token.INT, Raw: "8", Value: 8},
+				{Type: token.PIPE, Raw: "|"},
+				{Type: token.INT, Raw: "9", Value: 9},
+				{Type: token.AMPERSAND, Raw: "&"},
+				{Type: token.AMPERSAND, Raw: "&"},
+				{Type: token.INT, Raw: "10", Value: 10},
+				{Type: token.PIPE, Raw: "|"},
+				{Type: token.PIPE, Raw: "|"},
+				{Type: token.INT, Raw: "11", Value: 11},
 			},
 		},
 	}
