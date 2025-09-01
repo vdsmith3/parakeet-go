@@ -13,26 +13,26 @@ import (
 //
 // input  - The input string to lex
 // output - A slice of tokens
-func Lex(input string) ([]token.Token, error) {
+func Lex(input string) ([]*token.Token, error) {
 	reader := strings.NewReader(input)
 	return lex(reader)
 }
 
-func lex(reader *strings.Reader) ([]token.Token, error) {
+func lex(reader *strings.Reader) ([]*token.Token, error) {
 	nextToken, err := getNextToken(reader)
 	if err != nil {
 		return nil, err
 	}
 
 	if *nextToken == *token.EOFToken() {
-		return []token.Token{*nextToken}, nil
+		return []*token.Token{nextToken}, nil
 	}
 
 	followingTokens, err := lex(reader)
 	if err != nil {
 		return nil, err
 	}
-	return append([]token.Token{*nextToken}, followingTokens...), nil
+	return append([]*token.Token{nextToken}, followingTokens...), nil
 }
 
 func peek(reader *strings.Reader) (byte, error) {
