@@ -10,6 +10,7 @@ type TokenType int
 
 const (
 	EOF = iota
+	WHITESPACE
 	INT
 	FLOAT
 )

@@ -32,6 +32,10 @@ func lex(reader *strings.Reader) ([]*token.Token, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if nextToken.Type == token.WHITESPACE {
+		return followingTokens, nil
+	}
 	return append([]*token.Token{nextToken}, followingTokens...), nil
 }
 
@@ -41,6 +45,11 @@ func getNextToken(reader *strings.Reader) (*token.Token, error) {
 	}
 
 	token, err := GetNumericToken(reader)
+	if err == nil && token != nil {
+		return token, nil
+	}
+
+	token, err = getWhitespaceToken(reader)
 	if err == nil && token != nil {
 		return token, nil
 	}
@@ -58,4 +67,25 @@ func peek(reader *strings.Reader) (byte, error) {
 	}
 	reader.UnreadByte()
 	return peek, nil
+}
+
+func isWhitespace(b byte) bool {
+	return b == ' ' || b == '\t' || b == '\n' || b == '\r'
+}
+
+func getWhitespaceToken(reader *strings.Reader) (*token.Token, error) {
+	peek, err := peek(reader)
+	if err != nil {
+		return nil, err
+	}
+
+	if isWhitespace(peek) {
+		whitespaceByte, err := reader.ReadByte()
+		if err != nil {
+			return nil, err
+		}
+		return token.WhitespaceToken(whitespaceByte), nil
+	}
+
+	return nil, nil
 }

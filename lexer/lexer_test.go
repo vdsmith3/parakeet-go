@@ -20,6 +20,34 @@ func TestLex(t *testing.T) {
 			want:    []*token.Token{},
 			wantErr: false,
 		},
+		{
+			name:    "single digit",
+			input:   "1",
+			want:    []*token.Token{{Type: token.INT, Raw: "1", Value: 1}},
+			wantErr: false,
+		},
+		{
+			name:  "multiple digits",
+			input: "1 2 3  4",
+			want: []*token.Token{
+				{Type: token.INT, Raw: "1", Value: 1},
+				{Type: token.INT, Raw: "2", Value: 2},
+				{Type: token.INT, Raw: "3", Value: 3},
+				{Type: token.INT, Raw: "4", Value: 4},
+			},
+			wantErr: false,
+		},
+		{
+			name:  "multiple digits, variable whitespace",
+			input: "1 2   3      4  ",
+			want: []*token.Token{
+				{Type: token.INT, Raw: "1", Value: 1},
+				{Type: token.INT, Raw: "2", Value: 2},
+				{Type: token.INT, Raw: "3", Value: 3},
+				{Type: token.INT, Raw: "4", Value: 4},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
