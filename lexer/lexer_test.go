@@ -39,14 +39,33 @@ func TestLex(t *testing.T) {
 		},
 		{
 			name:  "multiple digits, variable whitespace",
-			input: "1 2   3      4  ",
+			input: "1 2   3      4.152",
 			want: []*token.Token{
 				{Type: token.INT, Raw: "1", Value: 1},
 				{Type: token.INT, Raw: "2", Value: 2},
 				{Type: token.INT, Raw: "3", Value: 3},
-				{Type: token.INT, Raw: "4", Value: 4},
+				{Type: token.FLOAT, Raw: "4.152", Value: 4.152},
 			},
 			wantErr: false,
+		},
+		{
+			name:  "operators",
+			input: "1 + 2 - 3 * 4 / 5 % 6 ^ 7",
+			want: []*token.Token{
+				{Type: token.INT, Raw: "1", Value: 1},
+				{Type: token.ADDITION, Raw: "+"},
+				{Type: token.INT, Raw: "2", Value: 2},
+				{Type: token.SUBTRACTION, Raw: "-"},
+				{Type: token.INT, Raw: "3", Value: 3},
+				{Type: token.MULTIPLICATION, Raw: "*"},
+				{Type: token.INT, Raw: "4", Value: 4},
+				{Type: token.DIVISION, Raw: "/"},
+				{Type: token.INT, Raw: "5", Value: 5},
+				{Type: token.MODULUS, Raw: "%"},
+				{Type: token.INT, Raw: "6", Value: 6},
+				{Type: token.EXPONENT, Raw: "^"},
+				{Type: token.INT, Raw: "7", Value: 7},
+			},
 		},
 	}
 	for _, tt := range tests {

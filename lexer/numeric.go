@@ -7,7 +7,7 @@ import (
 	"github.com/vdsmith3/parakeet/token"
 )
 
-func GetNumericToken(reader *strings.Reader) (*token.Token, error) {
+func getNumericToken(reader *strings.Reader) (*token.Token, error) {
 	peek, err := peek(reader)
 	if err != nil {
 		return nil, err

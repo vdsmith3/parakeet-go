@@ -9,8 +9,21 @@ type Token struct {
 type TokenType int
 
 const (
+	// meta
 	EOF = iota
 	WHITESPACE
+
+	// numeric
 	INT
 	FLOAT
+
+	// operator
+	ADDITION
+	SUBTRACTION
+	MULTIPLICATION
+	DIVISION
+	MODULUS
+	EXPONENT
+	AMPERSAND
+	PIPE
 )

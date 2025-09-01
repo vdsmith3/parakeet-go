@@ -72,7 +72,7 @@ func TestGetNumericToken(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			reader := strings.NewReader(tt.input)
-			got, err := GetNumericToken(reader)
+			got, err := getNumericToken(reader)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetNumericToken() error = %v, wantErr %v", err, tt.wantErr)
 				return

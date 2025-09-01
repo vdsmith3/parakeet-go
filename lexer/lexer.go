@@ -34,6 +34,7 @@ func lex(reader *strings.Reader) ([]*token.Token, error) {
 	}
 
 	if nextToken.Type == token.WHITESPACE {
+		// don't include whitespace tokens for processing
 		return followingTokens, nil
 	}
 	return append([]*token.Token{nextToken}, followingTokens...), nil
@@ -44,7 +45,12 @@ func getNextToken(reader *strings.Reader) (*token.Token, error) {
 		return token.EOFToken(), nil
 	}
 
-	token, err := GetNumericToken(reader)
+	token, err := getNumericToken(reader)
+	if err == nil && token != nil {
+		return token, nil
+	}
+
+	token, err = getOperatorToken(reader)
 	if err == nil && token != nil {
 		return token, nil
 	}
