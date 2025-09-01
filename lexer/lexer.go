@@ -35,68 +35,27 @@ func lex(reader *strings.Reader) ([]*token.Token, error) {
 	return append([]*token.Token{nextToken}, followingTokens...), nil
 }
 
-func peek(reader *strings.Reader) (byte, error) {
-	peek, err := reader.ReadByte()
-	if err != nil {
-		return 0, err
-	}
-	reader.UnreadByte()
-	return peek, nil
-}
-
 func getNextToken(reader *strings.Reader) (*token.Token, error) {
 	if reader.Len() == 0 {
 		return token.EOFToken(), nil
 	}
 
-	token, err := getNumericToken(reader)
-	if err != nil {
-		return nil, err
-	}
-
-	if token != nil {
+	token, err := GetNumericToken(reader)
+	if err == nil && token != nil {
 		return token, nil
 	}
 
-	return nil, errors.New("could not lex token")
+	if err == nil {
+		err = errors.New("could not lex token")
+	}
+	return nil, err
 }
 
-func getNumericToken(reader *strings.Reader) (*token.Token, error) {
-	peek, err := peek(reader)
-	if err != nil {
-		return nil, err
+func peek(reader *strings.Reader) (byte, error) {
+	peek, err := reader.ReadByte()
+	if err != nil && err != io.EOF {
+		return 0, err
 	}
-
-	if isNumericByte(peek) {
-		return parseNumericalToken(reader)
-	}
-	return nil, nil // not a number
-}
-
-func isNumericByte(b byte) bool {
-	return b >= '0' && b <= '9'
-}
-
-func parseNumericalToken(reader *strings.Reader) (*token.Token, error) {
-	bytes := make([]byte, 0)
-	nextByte, err := reader.ReadByte()
-	if err != nil {
-		return nil, err
-	}
-
-	for isNumericByte(nextByte) {
-		bytes = append(bytes, nextByte)
-		nextByte, err = reader.ReadByte()
-		if err != nil && err != io.EOF {
-			return nil, err
-		}
-	}
-
-	// unread the last byte that is not a digit
-	// reader.UnreadByte()
-	intToken, err := token.IntToken(bytes)
-	if err != nil {
-		return nil, err
-	}
-	return intToken, nil
+	reader.UnreadByte()
+	return peek, nil
 }

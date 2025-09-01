@@ -11,4 +11,5 @@ type TokenType int
 const (
 	EOF = iota
 	INT
+	FLOAT
 )

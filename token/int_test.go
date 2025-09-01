@@ -33,6 +33,12 @@ func TestIntToken(t *testing.T) {
 			want:    &Token{Type: INT, Raw: "1234", Value: 1234},
 			wantErr: false,
 		},
+		{
+			name:    "multiple digits, negative",
+			raw:     []byte("-1234"),
+			want:    &Token{Type: INT, Raw: "-1234", Value: -1234},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
